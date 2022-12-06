@@ -30,6 +30,7 @@ namespace FreshMarket.Core.Contracts
 
         Task<int> GetProductCategoryId(int productId);
 
+        Task Edit(int productId, ProductModel model);
 
     }
 }

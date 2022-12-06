@@ -114,6 +114,20 @@ namespace FreshMarket.Core.Services
             return product.Id;
         }
 
+        public async Task Edit(int productId, ProductModel model)
+        {
+            var product = await repo.GetByIdAsync<Product>(productId);
+
+            product.Title = model.Title;
+            product.Price = model.Price;
+            product.Description = model.Description;
+            product.ImageUrl = model.ImageUrl;
+            product.Address = model.Address;
+            product.CategoryId= model.CategoryId;
+
+            await repo.SaveChangesAsync();
+        }
+
         public async Task<bool> Exists(int id)
         {
             return await repo.AllReadonly<Product>()

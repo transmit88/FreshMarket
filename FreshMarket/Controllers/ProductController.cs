@@ -2,6 +2,7 @@
 using FreshMarket.Core.Models.Product;
 using FreshMarket.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreshMarket.Controllers
@@ -136,7 +137,41 @@ namespace FreshMarket.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, ProductModel model)
         {
-            return RedirectToAction(nameof(Details), new { id });
+
+            if (id != model.Id)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if ((await productService.Exists(model.Id) == false))
+            {
+                ModelState.AddModelError("", "Product does not exist");
+                model.ProductCategories = await productService.AllCategories();
+            }
+
+            if ((await productService.HasCreatorWithId(model.Id, User.Id())) == false)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            if ((await productService.CategoryExist(model.CategoryId)) == false)
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Category does noe exist");
+                model.ProductCategories = await productService.AllCategories();
+
+                return View(model);
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.ProductCategories = await productService.AllCategories();
+
+                return View(model);
+            }
+
+            await productService.Edit(model.Id, model);
+
+            return RedirectToAction(nameof(Details), new { model.Id });
         }
 
         

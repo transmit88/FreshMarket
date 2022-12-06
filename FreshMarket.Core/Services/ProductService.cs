@@ -89,6 +89,40 @@ namespace FreshMarket.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ProductServiceModel>> AllProductsByCreateId(int id)
+        {
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive)
+                .Where(p => p.CreatorId == id)
+                .Select(p => new ProductServiceModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Address = p.Address,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    IsBuyer = p.BuyerId != null,
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductServiceModel>> AllProductsByUserId(string userId)
+        {
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive)
+                .Where(p => p.BuyerId == userId)
+                .Select(p => new ProductServiceModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Address = p.Address,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    IsBuyer = p.BuyerId != null
+                })
+                .ToListAsync();
+        }
+
         public async Task<bool> CategoryExist(int categoryId)
         {
             return await repo.AllReadonly<Category>()

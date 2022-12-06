@@ -33,5 +33,10 @@ namespace FreshMarket.Core.Contracts
         Task Edit(int productId, ProductModel model);
 
         Task Delete(int productId);
+
+        Task<IEnumerable<ProductServiceModel>> AllProductsByCreateId(int id);
+
+        Task<IEnumerable<ProductServiceModel>> AllProductsByUserId(string userId);
+
     }
 }

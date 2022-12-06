@@ -81,11 +81,23 @@ namespace FreshMarket.Controllers
             return View(query);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Mine()
         {
-            var model = new AllProductQueryModel();
+            IEnumerable<ProductServiceModel> myProducts;
+            var userId = User.Id();
 
-            return View();
+            if (await creatorService.ExistById(userId))
+            {
+                int creatorId = await creatorService.GetCreatorId(userId);
+                myProducts = await productService.AllProductsByCreateId(creatorId);
+            }
+            else
+            {
+                myProducts = await productService.AllProductsByUserId(userId);
+            }
+
+            return View(myProducts);
         }
 
         [HttpGet]

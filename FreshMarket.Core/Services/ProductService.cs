@@ -114,6 +114,14 @@ namespace FreshMarket.Core.Services
             return product.Id;
         }
 
+        public async Task Delete(int productId)
+        {
+            var product = await repo.GetByIdAsync<Product>(productId);
+            product.IsActive = false;
+
+            await repo.SaveChangesAsync();
+        }
+
         public async Task Edit(int productId, ProductModel model)
         {
             var product = await repo.GetByIdAsync<Product>(productId);

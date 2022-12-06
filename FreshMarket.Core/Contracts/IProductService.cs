@@ -32,5 +32,6 @@ namespace FreshMarket.Core.Contracts
 
         Task Edit(int productId, ProductModel model);
 
+        Task Delete(int productId);
     }
 }

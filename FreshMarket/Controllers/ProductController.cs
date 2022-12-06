@@ -175,9 +175,46 @@ namespace FreshMarket.Controllers
         }
 
         
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+            if ((await productService.Exists(id)) == false)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if((await productService.HasCreatorWithId(id, User.Id())) == false)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            var product = await productService.ProductDetailsById(id);
+            var model = new ProductDetailsViewModel()
+            {
+                Title = product.Title,
+                Address = product.Address,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, ProductDetailsViewModel model)
+        {
+            if ((await productService.Exists(id)) == false)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            if ((await productService.HasCreatorWithId(id, User.Id())) == false)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+
+            await productService.Delete(id);
+
             return RedirectToAction(nameof(All));
         }
 

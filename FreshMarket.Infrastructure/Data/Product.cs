@@ -50,5 +50,7 @@ namespace FreshMarket.Infrastructure.Data
         public IdentityUser? Buyer { get; set; } = null!;
 
         public bool IsActive { get; set; } = true;
+
+
     }
 }

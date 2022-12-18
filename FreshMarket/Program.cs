@@ -73,7 +73,6 @@ app.UseEndpoints(endpoints =>
 
 });
 
-app.MapRazorPages();
 
 app.UseResponseCaching();
 

@@ -2,6 +2,7 @@
 using FreshMarket.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using static FreshMarket.Areas.Admin.Constants.AdminConstants;
 
 namespace FreshMarket.Controllers
 {
@@ -18,6 +19,11 @@ namespace FreshMarket.Controllers
         //public IActionResult Index() => View();
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole(AdminRoleName))
+            {
+                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+            }
+
             var model = await productService.LastTheeProduct();
 
             return View(model);

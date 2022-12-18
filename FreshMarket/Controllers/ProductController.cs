@@ -1,4 +1,5 @@
 ﻿using FreshMarket.Core.Contracts;
+using FreshMarket.Core.Extensions;
 using FreshMarket.Core.Models.Product;
 using FreshMarket.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -60,7 +61,7 @@ namespace FreshMarket.Controllers
 
             int id = await productService.Create(model, creatorId);
 
-            return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Details), new { id = id, information =  model.GetInformation() });
         }
 
         [HttpGet]
@@ -100,9 +101,9 @@ namespace FreshMarket.Controllers
             return View(myProducts);
         }
 
-        [HttpGet]
+        
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string information)
         {
             if ((await productService.Exists(id) == false))
             {
@@ -110,6 +111,13 @@ namespace FreshMarket.Controllers
             }
 
             var model = await productService.ProductDetailsById(id);
+
+            if (information != model.GetInformation())
+            {
+                TempData["ErrorMessage"] = "Don't touch my slug!";
+
+                return RedirectToAction("Index", "Product");
+            }
 
             return View(model);
         }
@@ -183,7 +191,7 @@ namespace FreshMarket.Controllers
 
             await productService.Edit(model.Id, model);
 
-            return RedirectToAction(nameof(Details), new { model.Id });
+            return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
         }
 
         

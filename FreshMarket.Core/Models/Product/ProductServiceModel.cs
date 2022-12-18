@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FreshMarket.Core.Contracts;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FreshMarket.Core.Models.Product
 {
-    public class ProductServiceModel
+    public class ProductServiceModel : IProductModel
     {
         public int Id { get; set; }
 

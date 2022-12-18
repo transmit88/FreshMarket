@@ -30,7 +30,7 @@
             <div class="form-inline">
                 @if (this.User.Identity.IsAuthenticated)
                 {
-                    
+                   
 
                    @if (Model.Creator.Email == userEmail)
                     {
@@ -44,7 +44,7 @@
                     {
                         <form class="ml-2" asp-controller="Product"
                       asp-action="Rent" asp-route-id="@Model.Id" method="post">
-                            <input class="btn btn-primary" type="submit" value="Buy" />
+                <input class="btn btn-primary" type="submit" value="Order inquiry" />
                         </form>
                     }
                     @*else

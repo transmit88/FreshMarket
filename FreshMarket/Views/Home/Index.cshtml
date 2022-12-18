@@ -37,8 +37,12 @@
                  src="@product.ImageUrl" alt="@product.Title">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>
-                        <a class="btn btn-primary" asp-controller="Products" asp-action="Details"
-                       asp-route-id="@product.Id"> @product.Title</a>
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"
+                    asp-route-information="@product.GetInformation()" class="btn btn-success">View</a>
+                        }
+                        
                     </h5>
                 </div>
             </div>

@@ -208,6 +208,7 @@ namespace FreshMarket.Core.Services
                     Id = p.Id,
                     Title = p.Title,
                     ImageUrl = p.ImageUrl,
+                    Address = p.Address,
                 })
                 .Take(3) // Take first 3
                 .ToListAsync();
